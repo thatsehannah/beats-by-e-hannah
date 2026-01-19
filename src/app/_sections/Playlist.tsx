@@ -33,14 +33,14 @@ const Playlist = () => {
           opacity: 1,
           duration: 1.2,
           ease: "power2.inOut",
-        }
+        },
       )
       .fromTo(
         ".music-player",
         {
           opacity: 0,
         },
-        { opacity: 1, duration: 1.2, ease: "power2.inOut" }
+        { opacity: 1, duration: 1.2, ease: "power2.inOut" },
       );
   }, []);
 
@@ -145,7 +145,7 @@ const Playlist = () => {
             me via{" "}
             <a
               className='underline'
-              href='mailto:elliotchannah@outlook.com'
+              href='mailto:thatsehannah@gmail.com'
             >
               email
             </a>

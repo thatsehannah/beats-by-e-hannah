@@ -60,7 +60,7 @@ const Hero = () => {
           yPercent: 0,
           duration: 4,
           ease: "power1.inOut",
-        }
+        },
       )
       .to(".call-to-action", {
         opacity: 1,
@@ -97,7 +97,7 @@ const Hero = () => {
         playsInline
         webkit-playsinline='true'
       />
-      <div className='z-50 absolute top-10 w-full flex flex-col justify-center items-center gap-1 text-white hero-instructions'>
+      <div className='z-50 absolute top-[50%] lg:top-10 w-full flex flex-col justify-center items-center gap-1 text-white hero-instructions'>
         <p>Scroll Down To Continue</p>
         <ChevronDown className='animate-pulse' />
       </div>
