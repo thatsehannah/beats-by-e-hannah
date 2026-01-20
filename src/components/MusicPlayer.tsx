@@ -168,22 +168,26 @@ const MusicPlayer = () => {
 
         {currentTrack.sampleSpotifyId !== "undefined" ? (
           <div className='flex items-center gap-3 mt-2 mb-4 '>
-            <div className='w-8 h-8 relative'>
-              <Image
-                src={sampleSpotifyData?.albumCoverUrl}
-                fill
-                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                alt='sampled song album cover'
-                quality={100}
-              />
-            </div>
-            <a
-              href={sampleSpotifyData!.trackUri}
-              target='_blank'
-              className='italic text-sm'
-            >
-              {`'${sampleSpotifyData.name}' by ${sampleSpotifyData.artist}`}
-            </a>
+            {sampleSpotifyData?.albumCoverUrl && (
+              <div className='w-8 h-8 relative'>
+                <Image
+                  src={sampleSpotifyData.albumCoverUrl}
+                  fill
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                  alt='sampled song album cover'
+                  quality={100}
+                />
+              </div>
+            )}
+            {sampleSpotifyData?.trackUri && (
+              <a
+                href={sampleSpotifyData!.trackUri}
+                target='_blank'
+                className='italic text-sm'
+              >
+                {`'${sampleSpotifyData.name}' by ${sampleSpotifyData.artist}`}
+              </a>
+            )}
           </div>
         ) : (
           <div className='mt-2 mb-4'>
