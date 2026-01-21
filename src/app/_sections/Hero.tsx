@@ -110,7 +110,7 @@ const Hero = () => {
         preload='auto'
         playsInline
       />
-      <div className='z-50 absolute top-1/2 lg:top-20 left-1/2 -translate-x-1/2 -translate-y-1/2 w-auto p-4 rounded-md flex flex-col justify-center items-center bg-white/60 shadow-md gap-1 hero-instructions'>
+      <div className='z-50 absolute top-1/4 lg:top-20 left-1/2 -translate-x-1/2 -translate-y-1/2 w-auto p-4 rounded-md flex flex-col justify-center items-center bg-white/60 shadow-md gap-1 hero-instructions'>
         <p className='text-black'>Scroll Down To Continue</p>
         <ChevronDown className='animate-pulse' />
       </div>
