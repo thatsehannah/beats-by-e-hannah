@@ -124,8 +124,8 @@
 }
 
 @utility masked-img {
-  mask-image: url("/images/masked-image.png");
+  mask-image: url("/images/masked-image.svg");
   mask-repeat: no-repeat;
   mask-position: center;
-  mask-size: 500%;
+  mask-size: 100%;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollToPlugin, ScrollTrigger } from "gsap/all";
@@ -84,21 +84,34 @@ const Hero = () => {
     });
   };
 
+  //explicitly playing the video
+  useEffect(() => {
+    const video = bgVideoRef.current;
+    if (!video) return;
+
+    video.style.maskSize = "401%";
+
+    requestAnimationFrame(() => {
+      video.style.maskSize = "400%";
+    });
+  }, []);
+
   return (
-    <section className='w-screen h-screen relative hero bg-background'>
+    <section className='w-screen h-screen relative hero bg-background bg-[url("/images/noise.png")]'>
       <video
         ref={bgVideoRef}
         src='/videos/hero-bg.mp4'
         autoPlay
         loop
         muted
+        height='100%'
+        width='100%'
         className='h-full w-full object-cover z-10 brightness-50 masked-img'
-        preload='metadata'
+        preload='auto'
         playsInline
-        webkit-playsinline='true'
       />
-      <div className='z-50 absolute top-[50%] lg:top-10 w-full flex flex-col justify-center items-center gap-1 text-white hero-instructions'>
-        <p>Scroll Down To Continue</p>
+      <div className='z-50 absolute top-1/2 lg:top-20 left-1/2 -translate-x-1/2 -translate-y-1/2 w-auto p-4 rounded-md flex flex-col justify-center items-center bg-white/60 shadow-md gap-1 hero-instructions'>
+        <p className='text-black'>Scroll Down To Continue</p>
         <ChevronDown className='animate-pulse' />
       </div>
       <div className='absolute z-50 xl:top-[6%] lg:top-[20%] lg:bottom-[14%] md:bottom-[32%] bottom-[36%] 2xl:left-[24rem] xl:left-[18rem] lg:left-40 md:left-18 left-[7%] w-auto flex flex-col justify-center items-center'>
