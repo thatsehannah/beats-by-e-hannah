@@ -164,11 +164,12 @@ const Playlist = () => {
             &copy; - {new Date().getFullYear()}
             {" - "}
             <a
-              href='https://thatsehannah.com'
+              href='https://thirdgenstudio.dev'
               target='_blank'
               className='underline'
+              aria-label="Third Gen Studio's website"
             >
-              TECH3
+              Third Gen Studio
             </a>
           </p>
           <p className='text-xs text-primary-foreground italic'>
