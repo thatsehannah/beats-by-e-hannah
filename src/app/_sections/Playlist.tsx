@@ -7,13 +7,17 @@ import MusicPlayer from "@/components/MusicPlayer";
 import { useEffect, useRef, useState } from "react";
 import { usePlaylist } from "@/lib/context";
 import { getAllTracks } from "@/lib/playlistService";
+import { useSearchParams } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Playlist = () => {
   const { state, dispatch } = usePlaylist();
+  const searchParams = useSearchParams();
+  const initialTrackId = searchParams.get("track");
   const [loading, setLoading] = useState(true);
   const [isVideoReady, setIsVideoReady] = useState(false);
+
   const bgVideoRef = useRef<HTMLVideoElement>(null);
 
   useGSAP(() => {
@@ -65,6 +69,13 @@ const Playlist = () => {
         const response = await getAllTracks();
 
         dispatch({ type: "setPlaylist", payload: { playlist: response } });
+
+        if (initialTrackId) {
+          dispatch({
+            type: "selectTrackById",
+            payload: { id: initialTrackId },
+          });
+        }
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -73,7 +84,9 @@ const Playlist = () => {
     };
 
     fetchTracks();
-  }, [dispatch]);
+    // intentionally only run once on mount — we don't want to re-fetch when the URL changes from our own replaceState calls
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const bgVideo = bgVideoRef.current;
@@ -111,6 +124,18 @@ const Playlist = () => {
   // if (loading) {
   //   return <p>Loading media...</p>;
   // }
+
+  // watches currentIndex and updates the URL whenever it changes
+  useEffect(() => {
+    const currentTrack = state.playlist[state.currentIndex];
+    if (!currentTrack?.id) return;
+
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("track") !== currentTrack.id) {
+      url.searchParams.set("track", currentTrack.id);
+      window.history.replaceState(null, "", url.toString());
+    }
+  }, [state.currentIndex, state.playlist]);
 
   return (
     <section

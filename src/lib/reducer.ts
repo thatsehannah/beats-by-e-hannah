@@ -15,6 +15,7 @@ export type Action =
   | { type: "selectTrack"; payload: { index: number } }
   | { type: "nextTrack"; payload: { playlist: Track[] } }
   | { type: "prevTrack"; payload: { playlist: Track[] } }
+  | { type: "selectTrackById"; payload: { id: string } }
   | { type: "reset" };
 
 export const playlistReducer = (state: State, action: Action): State => {
@@ -63,6 +64,15 @@ export const playlistReducer = (state: State, action: Action): State => {
       return {
         ...state,
         playlist: action.payload.playlist,
+      };
+    case "selectTrackById":
+      const index = state.playlist.findIndex(
+        (track) => track.id === action.payload.id,
+      );
+
+      return {
+        ...state,
+        currentIndex: index >= 0 ? index : 0,
       };
     default:
       throw new Error("Unknown action");
