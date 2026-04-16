@@ -4,7 +4,10 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const snapshot = await adminDb.collection("beat-metadata").get();
+    const snapshot = await adminDb
+      .collection("beat-metadata")
+      .orderBy("createdOn", "desc")
+      .get();
     const tracks: Track[] = [];
 
     snapshot.forEach((doc) => {
@@ -31,7 +34,7 @@ export async function GET() {
       {
         error: "Failed to fetch track",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
