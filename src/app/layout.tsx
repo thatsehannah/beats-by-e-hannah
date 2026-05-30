@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { Exo_2 } from "next/font/google";
+import { Exo_2, Roboto } from "next/font/google";
 import "./globals.css";
 
 const exoFont = Exo_2({
   variable: "--font-exo",
+  subsets: ["latin"],
+});
+
+const robotoFont = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
 });
 
@@ -24,7 +29,7 @@ export default function RootLayout({
     <html
       lang='en'
       suppressHydrationWarning={true}
-      className={`${exoFont.variable} antialiased`}
+      className={`${robotoFont.variable} antialiased`}
     >
       <body className='font-main'>{children}</body>
     </html>

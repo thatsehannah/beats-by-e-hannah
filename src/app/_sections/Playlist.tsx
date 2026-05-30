@@ -140,7 +140,7 @@ const Playlist = () => {
   return (
     <section
       id='playlist'
-      className='disclaimer h-full w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'
+      className='disclaimer h-full w-screen size-full text-accent-foreground z-20 relative'
     >
       <div className='w-full h-full absolute -z-10 lg:brightness-[0.40] brightness-[0.45] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
@@ -160,7 +160,9 @@ const Playlist = () => {
           <p className='xl:text-7xl md:text-6xl text-5xl uppercase font-black text-accent text-shadow-lg'>
             Disclaimer!
           </p>
-          <p className='md:text-xl text-[1rem] font-semibold text-left'>
+          <p
+            className={`md:text-xl text-[1rem] font-semibold text-left ${state.isPlaying && isVideoReady ? "text-white" : "text-black"}`}
+          >
             The beats showcased here contain samples that have not been cleared.
             These beats are shared for promotional and personal portfolio
             purposes only and are not intended for sale, distribution, or
@@ -179,7 +181,9 @@ const Playlist = () => {
         </div>
         <div className='music-player flex flex-col items-center mt-16 lg:my-4'>
           {loading ? <p>Loading media...</p> : <MusicPlayer />}
-          <p className='md:text-[1rem] text-sm text-center md:my-12 my-8'>
+          <p
+            className={`md:text-[1rem] text-sm text-center md:my-12 my-8 ${state.isPlaying && isVideoReady ? "text-white" : "text-black"}`}
+          >
             Click on the <span className='font-bold'>title</span> to flip the
             player to view my other beats.
           </p>
