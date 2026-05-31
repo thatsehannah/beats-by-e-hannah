@@ -42,7 +42,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --font-main: var(--font-exo);
+  --font-main: var(--font-raleway);
 }
 
 :root {

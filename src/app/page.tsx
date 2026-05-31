@@ -11,7 +11,9 @@ export default function Home() {
     <PlaylistProvider>
       <main>
         <HeroV2 />
-
+        <Suspense>
+          <Playlist />
+        </Suspense>
         <MiniMusicPlayer />
       </main>
     </PlaylistProvider>
