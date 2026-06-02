@@ -152,15 +152,13 @@ const MusicPlayer = () => {
   return (
     <div
       className={`relative md:w-96 w-76 h-65 rounded-xl text-foreground shadow-2xl ${
-        state.isPlaying
-          ? "shadow-none bg-background/50"
-          : "shadow-white bg-background"
+        state.isPlaying ? "shadow-none bg-accent/50" : "shadow-white bg-accent"
       } ease-in-out duration-700 player-card perspective-distant transform-3d`}
     >
       {/* front of music player */}
       <div className='absolute w-full h-full backface-hidden p-4'>
         <p
-          className='font-semibold hover:cursor-pointer w-fit text-lg'
+          className='font-bold hover:cursor-pointer w-fit text-2xl text-white'
           onClick={toggleFlip}
         >
           {currentTrack.title}
@@ -183,7 +181,7 @@ const MusicPlayer = () => {
               <a
                 href={sampleSpotifyData!.trackUri}
                 target='_blank'
-                className='italic text-sm'
+                className='italic text-sm text-white'
               >
                 {`'${sampleSpotifyData.name}' by ${sampleSpotifyData.artist}`}
               </a>
@@ -191,7 +189,7 @@ const MusicPlayer = () => {
           </div>
         ) : (
           <div className='mt-2 mb-4'>
-            <p className='italic text-sm'>
+            <p className='italic text-sm text-white'>
               No identifiable sample information for this beat.
             </p>
           </div>
@@ -203,7 +201,7 @@ const MusicPlayer = () => {
           max={duration || 0}
           value={currentTime}
           onChange={handleSeek}
-          className='w-full h-[5px] accent-accent'
+          className='w-full h-[5px] accent-primary'
         />
         <audio
           ref={audioRef}
@@ -211,24 +209,24 @@ const MusicPlayer = () => {
           preload='metadata'
         />
         <div className='flex items-center justify-between mt-2 text-sm'>
-          <p>{formatDuration(currentTime)}</p>
-          <p>{formatDuration(duration || 0)}</p>
+          <p className='text-background'>{formatDuration(currentTime)}</p>
+          <p className='text-background'>{formatDuration(duration || 0)}</p>
         </div>
         <div className='flex items-center justify-around mt-8'>
           <Button
-            className='text-accent-foreground bg-accent cursor-pointer'
+            className='text-foreground bg-primary cursor-pointer'
             onClick={handlePrevTrack}
           >
             <Rewind />
           </Button>
           <Button
-            className='text-accent-foreground bg-accent cursor-pointer'
+            className='text-foreground bg-primary cursor-pointer'
             onClick={handlePlayPause}
           >
             {state.isPlaying ? <Pause /> : <Play />}
           </Button>
           <Button
-            className='text-accent-foreground bg-accent cursor-pointer'
+            className='text-foreground bg-primary cursor-pointer'
             onClick={handleNextTrack}
           >
             <FastForward />
@@ -238,7 +236,9 @@ const MusicPlayer = () => {
       {/* back of music player */}
       <div className='absolute w-full h-full backface-hidden rotate-y-180 p-4 overflow-scroll'>
         <div className='flex justify-between'>
-          <p className='text-2xl mb-4 font-extrabold uppercase'>Beats</p>
+          <p className='text-2xl mb-4 font-extrabold uppercase text-background'>
+            Beats
+          </p>
           <Redo2
             onClick={toggleFlip}
             size={18}
@@ -256,6 +256,7 @@ const MusicPlayer = () => {
               } hover:scale-105 transition-transform duration-300 ease-in-out`}
             >
               <p
+                className='text-background'
                 onClick={() => {
                   toggleFlip();
                   dispatch({ type: "selectTrack", payload: { index } });

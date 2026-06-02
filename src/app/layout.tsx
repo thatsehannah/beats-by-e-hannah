@@ -1,24 +1,14 @@
 import type { Metadata } from "next";
-import { Exo_2, Roboto, Nunito, Raleway } from "next/font/google";
+import { Manrope, Tektur } from "next/font/google";
 import "./globals.css";
 
-const exoFont = Exo_2({
-  variable: "--font-exo",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
 });
 
-const robotoFont = Roboto({
-  variable: "--font-roboto",
-  subsets: ["latin"],
-});
-
-const nunitoFont = Nunito({
-  variable: "--font-nunito",
-  subsets: ["latin"],
-});
-
-const ralewayFont = Raleway({
-  variable: "--font-raleway",
+const tektur = Tektur({
+  variable: "--font-tektur",
   subsets: ["latin"],
 });
 
@@ -39,7 +29,7 @@ export default function RootLayout({
     <html
       lang='en'
       suppressHydrationWarning={true}
-      className={`${ralewayFont.variable} antialiased`}
+      className={`${manrope.variable} ${tektur.variable} antialiased`}
     >
       <body className='font-main'>{children}</body>
     </html>

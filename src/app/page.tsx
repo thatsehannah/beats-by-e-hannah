@@ -5,6 +5,7 @@ import MiniMusicPlayer from "@/components/MiniMusicPlayer";
 import { PlaylistProvider } from "@/lib/context";
 import { Suspense } from "react";
 import HeroV2 from "./_sections/HeroV2";
+import MiniMusicPlayerV2 from "@/components/MiniMusicPlayerV2";
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
         <Suspense>
           <Playlist />
         </Suspense>
-        <MiniMusicPlayer />
+        <MiniMusicPlayerV2 />
       </main>
     </PlaylistProvider>
   );
