@@ -16,8 +16,10 @@ const HeroV2 = () => {
       <div className='h-full w-full flex flex-col items-center justify-center'>
         <div className='flex flex-col w-full h-1/3 justify-evenly'>
           <div className='flex justify-between w-full'>
-            <p className='font-black text-5xl uppercase'>Beats by E. Hannah</p>
-            <p className='text-4xl font-extralight'>
+            <p className='font-regular text-4xl uppercase'>
+              Beats by E. Hannah
+            </p>
+            <p className='text-3xl font-extralight'>
               Powered by{" "}
               <span className='inline-flex cursor-pointer'>
                 <Logo />
@@ -26,7 +28,7 @@ const HeroV2 = () => {
           </div>
           <Marquee
             items={items}
-            speed={25}
+            speed={50}
           />
         </div>
         <video

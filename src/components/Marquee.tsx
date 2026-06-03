@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { Fragment, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -17,7 +17,6 @@ export default function Marquee({ items, speed = 50 }: MarqueeProps) {
     () => {
       if (!scrollRef.current) return;
 
-      // Clean, seamless linear infinite timeline
       const tl = gsap.timeline({ repeat: -1 });
 
       tl.to(scrollRef.current, {
@@ -38,7 +37,6 @@ export default function Marquee({ items, speed = 50 }: MarqueeProps) {
         container.addEventListener("mouseleave", handleMouseLeave);
       }
 
-      // Cleanup event listeners when component unmounts
       return () => {
         if (container) {
           container.removeEventListener("mouseenter", handleMouseEnter);
@@ -46,7 +44,7 @@ export default function Marquee({ items, speed = 50 }: MarqueeProps) {
         }
       };
     },
-    { scope: containerRef }, // Keeps selectors scoped specifically to this wrapper
+    { scope: containerRef },
   );
 
   return (
@@ -61,15 +59,12 @@ export default function Marquee({ items, speed = 50 }: MarqueeProps) {
       >
         {/* Set 1 */}
         {items.map((item, index) => (
-          <>
-            <span
-              key={`orig-${index}`}
-              className='text-primary-foreground text-9xl font-bold uppercase tracking-wider'
-            >
+          <Fragment key={index}>
+            <span className='text-primary-foreground text-9xl font-bold uppercase tracking-wider'>
               {item}
             </span>
             <span className='text-9xl'> • </span>
-          </>
+          </Fragment>
         ))}
         {/* Set 2 (Identical Duplicate) */}
         {items.map((item, index) => (

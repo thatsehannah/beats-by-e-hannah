@@ -234,10 +234,10 @@ const MusicPlayer = () => {
         </div>
       </div>
       {/* back of music player */}
-      <div className='absolute w-full h-full backface-hidden rotate-y-180 p-4 overflow-scroll'>
-        <div className='flex justify-between'>
-          <p className='text-2xl mb-4 font-extrabold uppercase text-background'>
-            Beats
+      <div className='absolute w-full h-full backface-hidden rotate-y-180 overflow-scroll'>
+        <div className='flex justify-between items-center sticky top-0 bg-white py-3 px-2'>
+          <p className='text-lg font-semibold uppercase text-foreground'>
+            Select a track
           </p>
           <Redo2
             onClick={toggleFlip}
@@ -249,14 +249,14 @@ const MusicPlayer = () => {
           return (
             <div
               key={index}
-              className={`cursor-pointer my-2 p-2 border-b-2 flex items-center justify-center ${
+              className={`cursor-pointer p-2 border-b border-background flex items-center justify-center ${
                 currentTrack.title === track.title
-                  ? "bg-amber-100 font-bold text-shadow-2xs"
-                  : "font-light"
+                  ? "bg-background font-black text-shadow-2xs text-foreground"
+                  : "font-regular text-background"
               } hover:scale-105 transition-transform duration-300 ease-in-out`}
             >
               <p
-                className='text-background'
+                className='p-1'
                 onClick={() => {
                   toggleFlip();
                   dispatch({ type: "selectTrack", payload: { index } });
