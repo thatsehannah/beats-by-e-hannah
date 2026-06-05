@@ -50,7 +50,7 @@ export default function Marquee({ items, speed = 50 }: MarqueeProps) {
   return (
     <div
       ref={containerRef}
-      className='w-full overflow-hidden py-6 flex whitespace-nowrap mx-auto'
+      className='w-full overflow-hidden py-6 flex whitespace-nowrap mx-auto '
     >
       {/* Scroll container must hold two identical sets of content to mask the loop point */}
       <div
@@ -60,17 +60,17 @@ export default function Marquee({ items, speed = 50 }: MarqueeProps) {
         {/* Set 1 */}
         {items.map((item, index) => (
           <Fragment key={index}>
-            <span className='text-primary-foreground text-9xl font-bold uppercase tracking-wider'>
+            <span className='text-primary-foreground text-7xl lg:text-9xl font-bold uppercase tracking-wider'>
               {item}
             </span>
-            <span className='text-9xl'> • </span>
+            <span className='text-7xl lg:text-9xl'> • </span>
           </Fragment>
         ))}
         {/* Set 2 (Identical Duplicate) */}
         {items.map((item, index) => (
           <span
             key={`clone-${index}`}
-            className='text-primary-foreground text-9xl font-bold uppercase tracking-wider'
+            className='text-primary-foreground text-7xl lg:text-9xl font-bold uppercase tracking-wider'
           >
             {item}
           </span>
