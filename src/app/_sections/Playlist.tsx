@@ -142,7 +142,7 @@ const Playlist = () => {
       id='playlist'
       className='disclaimer h-screen w-screen size-full text-accent-foreground z-20 relative bg-foreground/10'
     >
-      <div className='w-full h-full absolute -z-10 lg:brightness-[0.40] brightness-[0.45] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-80% lg:mask-x-to-100% lg:mask-y-from-100% lg:mask-y-to-100% '>
+      <div className='w-full h-full absolute -z-10 lg:brightness-[0.40] brightness-[0.45] vid-bg opacity-0 mask-y-from-90% mask-y-to-100% lg:mask-x-from-80% lg:mask-x-to-100% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
           src={state.playlist[state.currentIndex]?.video}
           muted
