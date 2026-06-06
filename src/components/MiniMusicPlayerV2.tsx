@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/all";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Rewind } from "lucide-react";
 import { usePlaylist } from "@/lib/context";
@@ -13,8 +13,6 @@ const MiniMusicPlayerV2 = () => {
   const { state, dispatch } = usePlaylist();
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
 
   const handlePlayPause = () => {
     if (state.isPlaying) {
@@ -44,7 +42,7 @@ const MiniMusicPlayerV2 = () => {
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  });
+  }, [state.isPlaying]);
 
   useEffect(() => {
     if (state.playlist.length) {
@@ -53,14 +51,14 @@ const MiniMusicPlayerV2 = () => {
   }, [state.playlist]);
 
   if (loading) {
-    return;
+    return null;
   }
 
   return (
     <div
       className={`flex items-center gap-8 lg:p-4 p-3 bg-accent fixed bottom-0 z-50 w-full shadow-2xl ${
-        isVisible ? "opacity-100" : "opacity-0"
-      } transition-all ease-in-out duration-500`}
+        isVisible && state.isPlaying ? "translate-y-0" : "translate-y-full"
+      } transition-transform ease-in-out duration-1000`}
     >
       <div className='flex items-center justify-around'>
         <Button

@@ -59,7 +59,7 @@ const HeroV2 = () => {
       <div className='h-full w-full flex flex-col mt-8 xl:items-center  relative'>
         <div className='flex flex-col w-full h-1/3 gap-10'>
           <div className='flex justify-between items-center w-full'>
-            <p className='font-semibold font-logo text-2xl xl:text-4xl uppercase ml-3 lg:ml-6'>
+            <p className='font-semibold text-2xl xl:text-4xl uppercase ml-3 lg:ml-6'>
               Beats by E. Hannah
             </p>
             <div className='flex items-center gap-4 lg:gap-8 mr-3 lg:mr-6'>
@@ -67,6 +67,7 @@ const HeroV2 = () => {
                 href='https://instagram.com/thatsehannah'
                 target='_blank'
                 className='cursor-pointer'
+                aria-label="E. Hannah's Instagram account"
               >
                 <InstagramIcon className='text-foreground stroke-1 h-5 w-5 lg:h-8 lg:w-8' />
               </a>
@@ -74,6 +75,7 @@ const HeroV2 = () => {
                 href='https://threads.com/thatsehannah'
                 target='_blank'
                 className='cursor-pointer'
+                aria-label="E. Hannah's Threads account"
               >
                 <ThreadsIcon className='text-foreground stroke-1 h-5 w-5 lg:h-8 lg:w-8' />
               </a>
@@ -86,7 +88,7 @@ const HeroV2 = () => {
         </div>
         <video
           ref={videoRef}
-          src='/videos/hero-v2-bg.mp4'
+          src='/videos/hero2.mp4'
           loop
           muted
           autoPlay
@@ -95,7 +97,7 @@ const HeroV2 = () => {
         />
         <video
           ref={mobileVideoRef}
-          src='/videos/hero-v2-bg.mp4'
+          src='/videos/hero2.mp4'
           loop
           muted
           autoPlay
