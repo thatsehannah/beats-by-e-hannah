@@ -31,7 +31,7 @@ const Playlist = () => {
 
     disclaimerTl
       .fromTo(
-        ".disclaimer-text",
+        ".disclaimer-container",
         { opacity: 0 },
         {
           opacity: 1,
@@ -59,6 +59,15 @@ const Playlist = () => {
       paused: true,
     });
   }, []);
+
+  useGSAP(() => {
+    gsap.to(".disclaimer-text", {
+      opacity: state.isPlaying ? 0 : 1,
+      duration: 0.7,
+      ease: "power2.inOut",
+      force3d: true,
+    });
+  }, [state.isPlaying]);
 
   //fetching the tracks from firestore
   useEffect(() => {
@@ -156,17 +165,11 @@ const Playlist = () => {
         <div className="absolute inset-0 bg-[url('/images/noise.png')] mix-blend-overlay pointer-events-none" />
       </div>
       <div className='h-full w-full rounded-2xl flex items-center justify-around flex-col z-30 overflow-hidden'>
-        <div
-          className={` disclaimer-text border-accent text-center xl:max-w-[50%] md:max-w-[80%] flex flex-col lg:items-center gap-5 p-6 lg:p-10 2xl:p-16`}
-        >
-          <p
-            className={`${state.isPlaying && "opacity-0"} transition-all duration-700 xl:text-7xl md:text-6xl text-5xl uppercase font-black text-accent text-shadow-lg`}
-          >
+        <div className='disclaimer-container border-accent text-center xl:max-w-[50%] md:max-w-[80%] flex flex-col lg:items-center gap-5 p-6 lg:p-10 2xl:p-16'>
+          <p className='disclaimer-text xl:text-7xl md:text-6xl text-5xl uppercase font-black text-accent text-shadow-lg'>
             Disclaimer!
           </p>
-          <p
-            className={`${state.isPlaying && "opacity-0"} transition-all duration-700 md:text-xl text-[1rem] font-regular text-left text-foreground`}
-          >
+          <p className='disclaimer-text md:text-xl text-[1rem] font-regular text-left text-foreground'>
             The beats showcased here contain samples that have not been cleared.
             These beats are shared for promotional and personal portfolio
             purposes only and are not intended for sale, distribution, or
