@@ -15,9 +15,6 @@ const tektur = Tektur({
 export const metadata: Metadata = {
   title: "Beats by E. Hannah",
   description: "Beat making hobbyist",
-  icons: {
-    icon: "../icon.png",
-  },
 };
 
 export default function RootLayout({

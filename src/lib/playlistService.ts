@@ -1,4 +1,4 @@
-import { type SpotifyTrack, type Track } from "./types";
+import { type DiscogsResponse, type Track } from "./types";
 
 export const getAllTracks = async (): Promise<Track[]> => {
   try {
@@ -16,21 +16,30 @@ export const getAllTracks = async (): Promise<Track[]> => {
   }
 };
 
-export const getSpotifyTrack = async (
-  trackId: string
-): Promise<SpotifyTrack> => {
+export const getDiscogsData = async (
+  trackId: string,
+  position: string,
+): Promise<DiscogsResponse> => {
   try {
-    const response = await fetch(`/api/spotify/track/${trackId}`);
+    const response = await fetch(
+      `/api/discogs/${trackId}?position=${position}`,
+    );
 
     if (response.ok) {
-      const data = await response.json();
+      const result = await response.json();
 
-      return data;
+      const formattedArtist = result.artist.replace(/\s*\(\d+\)/, "");
+      const formattedResult = {
+        ...result,
+        artist: formattedArtist,
+      };
+
+      return formattedResult;
     }
 
     throw new Error(`HTTP error! status: ${response.status}`);
   } catch (error) {
-    console.log("Error in getSpotifyTrack", error);
+    console.log("Error in getDiscogsData", error);
     throw error;
   }
 };

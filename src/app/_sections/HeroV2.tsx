@@ -59,14 +59,14 @@ const HeroV2 = () => {
       <div className='h-full w-full flex flex-col mt-8 xl:items-center  relative'>
         <div className='flex flex-col w-full h-1/3 gap-10'>
           <div className='flex justify-between items-center w-full'>
-            <p className='font-semibold text-2xl xl:text-4xl uppercase ml-3 lg:ml-6'>
+            <p className='font-light text-2xl xl:text-4xl uppercase ml-3 lg:ml-6'>
               Beats by E. Hannah
             </p>
             <div className='flex items-center gap-4 lg:gap-8 mr-3 lg:mr-6'>
               <a
                 href='https://instagram.com/thatsehannah'
                 target='_blank'
-                className='cursor-pointer'
+                className='cursor-pointer hover:scale-125 transition-transform ease-in-out duration-300'
                 aria-label="E. Hannah's Instagram account"
               >
                 <InstagramIcon className='text-foreground stroke-1 h-5 w-5 lg:h-8 lg:w-8' />
@@ -74,7 +74,7 @@ const HeroV2 = () => {
               <a
                 href='https://threads.com/thatsehannah'
                 target='_blank'
-                className='cursor-pointer'
+                className='cursor-pointer hover:scale-125 transition-transform ease-in-out duration-300'
                 aria-label="E. Hannah's Threads account"
               >
                 <ThreadsIcon className='text-foreground stroke-1 h-5 w-5 lg:h-8 lg:w-8' />
@@ -93,7 +93,7 @@ const HeroV2 = () => {
           muted
           autoPlay
           playsInline
-          className='hidden lg:block h-1/2 w-1/2 object-cover z-10 rounded-2xl'
+          className='hidden lg:block h-1/2 w-1/2 object-cover z-10 rounded-2xl mt-12'
         />
         <video
           ref={mobileVideoRef}
@@ -104,13 +104,9 @@ const HeroV2 = () => {
           playsInline
           className='block lg:hidden w-full object-cover z-10 h-full'
         />
-        <div className='w-full items-end mt-auto absolute bottom-0'>
-          <p className='text-lg text-end font-extralight pr-2'>
-            Powered by{" "}
-            <span className='inline-flex cursor-pointer'>
-              <Logo />
-            </span>
-          </p>
+        <div className='flex items-center justify-end w-full mt-auto mr-3 lg:mr-6 absolute bottom-0 '>
+          <p className='text-lg text-end font-extralight pr-1'>Powered by </p>
+          <Logo />
         </div>
       </div>
     </section>

@@ -5,9 +5,9 @@ import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Redo2, Rewind } from "lucide-react";
 import gsap from "gsap";
 import { usePlaylist } from "@/lib/context";
-import { SpotifyTrack, Track } from "@/lib/types";
+import { type DiscogsResponse, type Track } from "@/lib/types";
 import Image from "next/image";
-import { getSpotifyTrack } from "@/lib/playlistService";
+import { getDiscogsData } from "@/lib/playlistService";
 
 //TODO: keep track of number of plays for each beat
 //TODO: add like and dislike buttons to media player for each beat
@@ -16,11 +16,11 @@ const MusicPlayer = () => {
   const { state, dispatch } = usePlaylist();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [sampleSpotifyData, setSampleSpotifyData] = useState<SpotifyTrack>({
-    name: "",
-    trackUri: "",
-    albumCoverUrl: "",
+  const [sampleDiscogsData, setSampleDiscogsData] = useState<DiscogsResponse>({
+    id: "",
+    trackTitle: "",
     artist: "",
+    coverImage: "",
   });
   const [showPlaylist, setShowPlaylist] = useState(false);
 
@@ -84,11 +84,13 @@ const MusicPlayer = () => {
 
   //getting sample data
   useEffect(() => {
-    if (currentTrack && currentTrack.sampleSpotifyId !== "undefined") {
+    if (currentTrack && currentTrack.discogsData) {
       const fetchSample = async () => {
         try {
-          const response = await getSpotifyTrack(currentTrack.sampleSpotifyId);
-          setSampleSpotifyData(response);
+          const releaseId = currentTrack.discogsData.releaseId;
+          const position = currentTrack.discogsData.trackPosition;
+          const response = await getDiscogsData(releaseId, position);
+          setSampleDiscogsData(response);
         } catch (error) {
           console.log(error);
         }
@@ -164,12 +166,12 @@ const MusicPlayer = () => {
           {currentTrack.title}
         </p>
 
-        {currentTrack.sampleSpotifyId !== "undefined" ? (
+        {currentTrack.discogsData ? (
           <div className='flex items-center gap-3 mt-2 mb-4 '>
-            {sampleSpotifyData?.albumCoverUrl && (
-              <div className='w-8 h-8 relative'>
+            {sampleDiscogsData?.coverImage && (
+              <div className='w-10 h-10 relative'>
                 <Image
-                  src={sampleSpotifyData.albumCoverUrl}
+                  src={sampleDiscogsData.coverImage}
                   fill
                   sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   alt='sampled song album cover'
@@ -177,13 +179,13 @@ const MusicPlayer = () => {
                 />
               </div>
             )}
-            {sampleSpotifyData?.trackUri && (
+            {sampleDiscogsData.artist && sampleDiscogsData.trackTitle && (
               <a
-                href={sampleSpotifyData!.trackUri}
+                href={currentTrack.discogsData.url}
                 target='_blank'
                 className='italic text-sm text-white'
               >
-                {`'${sampleSpotifyData.name}' by ${sampleSpotifyData.artist}`}
+                {`'${sampleDiscogsData.trackTitle}' by ${sampleDiscogsData.artist}`}
               </a>
             )}
           </div>

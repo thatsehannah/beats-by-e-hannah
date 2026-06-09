@@ -11,14 +11,14 @@ export async function GET() {
     const tracks: Track[] = [];
 
     snapshot.forEach((doc) => {
-      const data = doc.data() as Track;
+      const data = doc.data();
 
       tracks.push({
         id: doc.id,
         title: data.title,
         src: data.src,
         video: data.video,
-        sampleSpotifyId: data.sampleSpotifyId,
+        discogsData: data["discogs-info"],
       });
     });
 
