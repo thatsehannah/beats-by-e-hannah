@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { Exo_2 } from "next/font/google";
+import { Manrope, Tektur } from "next/font/google";
 import "./globals.css";
 
-const exoFont = Exo_2({
-  variable: "--font-exo",
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+});
+
+const tektur = Tektur({
+  variable: "--font-tektur",
   subsets: ["latin"],
 });
 
@@ -11,7 +16,7 @@ export const metadata: Metadata = {
   title: "Beats by E. Hannah",
   description: "Beat making hobbyist",
   icons: {
-    icon: "../icon.png",
+    icon: "../icon.svg",
   },
 };
 
@@ -24,7 +29,7 @@ export default function RootLayout({
     <html
       lang='en'
       suppressHydrationWarning={true}
-      className={`${exoFont.variable} antialiased`}
+      className={`${manrope.variable} ${tektur.variable} antialiased`}
     >
       <body className='font-main'>{children}</body>
     </html>

@@ -5,9 +5,9 @@ import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Redo2, Rewind } from "lucide-react";
 import gsap from "gsap";
 import { usePlaylist } from "@/lib/context";
-import { SpotifyTrack, Track } from "@/lib/types";
+import { type DiscogsResponse, type Track } from "@/lib/types";
 import Image from "next/image";
-import { getSpotifyTrack } from "@/lib/playlistService";
+import { getDiscogsData } from "@/lib/playlistService";
 
 //TODO: keep track of number of plays for each beat
 //TODO: add like and dislike buttons to media player for each beat
@@ -16,11 +16,11 @@ const MusicPlayer = () => {
   const { state, dispatch } = usePlaylist();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [sampleSpotifyData, setSampleSpotifyData] = useState<SpotifyTrack>({
-    name: "",
-    trackUri: "",
-    albumCoverUrl: "",
+  const [sampleDiscogsData, setSampleDiscogsData] = useState<DiscogsResponse>({
+    id: "",
+    trackTitle: "",
     artist: "",
+    coverImage: "",
   });
   const [showPlaylist, setShowPlaylist] = useState(false);
 
@@ -84,11 +84,13 @@ const MusicPlayer = () => {
 
   //getting sample data
   useEffect(() => {
-    if (currentTrack && currentTrack.sampleSpotifyId !== "undefined") {
+    if (currentTrack && currentTrack.discogsData) {
       const fetchSample = async () => {
         try {
-          const response = await getSpotifyTrack(currentTrack.sampleSpotifyId);
-          setSampleSpotifyData(response);
+          const releaseId = currentTrack.discogsData.releaseId;
+          const position = currentTrack.discogsData.trackPosition;
+          const response = await getDiscogsData(releaseId, position);
+          setSampleDiscogsData(response);
         } catch (error) {
           console.log(error);
         }
@@ -140,7 +142,7 @@ const MusicPlayer = () => {
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: `${currentTrack.title} • Beats By E. Hannah`,
-        artwork: [{ src: "/images/new-beats-logo.png" }],
+        artwork: [{ src: "/images/logo.png" }],
       });
       navigator.mediaSession.setActionHandler("play", handlePlayPause);
       navigator.mediaSession.setActionHandler("pause", handlePlayPause);
@@ -152,26 +154,24 @@ const MusicPlayer = () => {
   return (
     <div
       className={`relative md:w-96 w-76 h-65 rounded-xl text-foreground shadow-2xl ${
-        state.isPlaying
-          ? "shadow-none bg-background/50"
-          : "shadow-white bg-background"
+        state.isPlaying ? "shadow-none bg-accent/50" : "shadow-white bg-accent"
       } ease-in-out duration-700 player-card perspective-distant transform-3d`}
     >
       {/* front of music player */}
       <div className='absolute w-full h-full backface-hidden p-4'>
         <p
-          className='font-semibold hover:cursor-pointer w-fit text-lg'
+          className='font-bold hover:cursor-pointer w-fit text-2xl text-white'
           onClick={toggleFlip}
         >
           {currentTrack.title}
         </p>
 
-        {currentTrack.sampleSpotifyId !== "undefined" ? (
+        {currentTrack.discogsData ? (
           <div className='flex items-center gap-3 mt-2 mb-4 '>
-            {sampleSpotifyData?.albumCoverUrl && (
-              <div className='w-8 h-8 relative'>
+            {sampleDiscogsData?.coverImage && (
+              <div className='w-10 h-10 relative'>
                 <Image
-                  src={sampleSpotifyData.albumCoverUrl}
+                  src={sampleDiscogsData.coverImage}
                   fill
                   sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   alt='sampled song album cover'
@@ -179,19 +179,19 @@ const MusicPlayer = () => {
                 />
               </div>
             )}
-            {sampleSpotifyData?.trackUri && (
+            {sampleDiscogsData.artist && sampleDiscogsData.trackTitle && (
               <a
-                href={sampleSpotifyData!.trackUri}
+                href={currentTrack.discogsData.url}
                 target='_blank'
-                className='italic text-sm'
+                className='italic text-sm text-white'
               >
-                {`'${sampleSpotifyData.name}' by ${sampleSpotifyData.artist}`}
+                {`'${sampleDiscogsData.trackTitle}' by ${sampleDiscogsData.artist}`}
               </a>
             )}
           </div>
         ) : (
           <div className='mt-2 mb-4'>
-            <p className='italic text-sm'>
+            <p className='italic text-sm text-white'>
               No identifiable sample information for this beat.
             </p>
           </div>
@@ -203,7 +203,7 @@ const MusicPlayer = () => {
           max={duration || 0}
           value={currentTime}
           onChange={handleSeek}
-          className='w-full h-[5px] accent-accent'
+          className='w-full h-[5px] accent-primary'
         />
         <audio
           ref={audioRef}
@@ -211,24 +211,24 @@ const MusicPlayer = () => {
           preload='metadata'
         />
         <div className='flex items-center justify-between mt-2 text-sm'>
-          <p>{formatDuration(currentTime)}</p>
-          <p>{formatDuration(duration || 0)}</p>
+          <p className='text-background'>{formatDuration(currentTime)}</p>
+          <p className='text-background'>{formatDuration(duration || 0)}</p>
         </div>
         <div className='flex items-center justify-around mt-8'>
           <Button
-            className='text-accent-foreground bg-accent cursor-pointer'
+            className='text-foreground bg-primary cursor-pointer'
             onClick={handlePrevTrack}
           >
             <Rewind />
           </Button>
           <Button
-            className='text-accent-foreground bg-accent cursor-pointer'
+            className='text-foreground bg-primary cursor-pointer'
             onClick={handlePlayPause}
           >
             {state.isPlaying ? <Pause /> : <Play />}
           </Button>
           <Button
-            className='text-accent-foreground bg-accent cursor-pointer'
+            className='text-foreground bg-primary cursor-pointer'
             onClick={handleNextTrack}
           >
             <FastForward />
@@ -236,9 +236,11 @@ const MusicPlayer = () => {
         </div>
       </div>
       {/* back of music player */}
-      <div className='absolute w-full h-full backface-hidden rotate-y-180 p-4 overflow-scroll'>
-        <div className='flex justify-between'>
-          <p className='text-2xl mb-4 font-extrabold uppercase'>Beats</p>
+      <div className='absolute w-full h-full backface-hidden rotate-y-180 overflow-scroll'>
+        <div className='flex justify-between items-center sticky top-0 bg-white py-3 px-2'>
+          <p className='text-lg font-semibold uppercase text-foreground'>
+            Select a track
+          </p>
           <Redo2
             onClick={toggleFlip}
             size={18}
@@ -249,13 +251,14 @@ const MusicPlayer = () => {
           return (
             <div
               key={index}
-              className={`cursor-pointer my-2 p-2 border-b-2 flex items-center justify-center ${
+              className={`cursor-pointer p-2 border-b border-background flex items-center justify-center ${
                 currentTrack.title === track.title
-                  ? "bg-amber-100 font-bold text-shadow-2xs"
-                  : "font-light"
+                  ? "bg-background font-black text-shadow-2xs text-foreground"
+                  : "font-regular text-background"
               } hover:scale-105 transition-transform duration-300 ease-in-out`}
             >
               <p
+                className='p-1'
                 onClick={() => {
                   toggleFlip();
                   dispatch({ type: "selectTrack", payload: { index } });

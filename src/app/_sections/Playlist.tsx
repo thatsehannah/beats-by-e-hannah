@@ -140,9 +140,9 @@ const Playlist = () => {
   return (
     <section
       id='playlist'
-      className='disclaimer h-full w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'
+      className='disclaimer h-screen w-screen size-full text-accent-foreground z-20 relative bg-foreground/10'
     >
-      <div className='w-full h-full absolute -z-10 lg:brightness-[0.40] brightness-[0.45] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
+      <div className='w-full h-full absolute -z-10 lg:brightness-[0.40] brightness-[0.45] vid-bg opacity-0 mask-y-from-90% mask-y-to-100% lg:mask-x-from-80% lg:mask-x-to-100% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
           src={state.playlist[state.currentIndex]?.video}
           muted
@@ -156,11 +156,17 @@ const Playlist = () => {
         <div className="absolute inset-0 bg-[url('/images/noise.png')] mix-blend-overlay pointer-events-none" />
       </div>
       <div className='h-full w-full rounded-2xl flex items-center justify-around flex-col z-30 overflow-hidden'>
-        <div className='disclaimer-text border-accent text-center xl:max-w-[50%] md:max-w-[80%] flex flex-col lg:items-center gap-5 p-6 lg:p-10 2xl:p-16'>
-          <p className='xl:text-7xl md:text-6xl text-5xl uppercase font-black text-accent text-shadow-lg'>
+        <div
+          className={` disclaimer-text border-accent text-center xl:max-w-[50%] md:max-w-[80%] flex flex-col lg:items-center gap-5 p-6 lg:p-10 2xl:p-16`}
+        >
+          <p
+            className={`${state.isPlaying && "opacity-0"} transition-all duration-700 xl:text-7xl md:text-6xl text-5xl uppercase font-black text-accent text-shadow-lg`}
+          >
             Disclaimer!
           </p>
-          <p className='md:text-xl text-[1rem] font-semibold text-left'>
+          <p
+            className={`${state.isPlaying && "opacity-0"} transition-all duration-700 md:text-xl text-[1rem] font-regular text-left text-foreground`}
+          >
             The beats showcased here contain samples that have not been cleared.
             These beats are shared for promotional and personal portfolio
             purposes only and are not intended for sale, distribution, or
@@ -179,24 +185,28 @@ const Playlist = () => {
         </div>
         <div className='music-player flex flex-col items-center mt-16 lg:my-4'>
           {loading ? <p>Loading media...</p> : <MusicPlayer />}
-          <p className='md:text-[1rem] text-sm text-center md:my-12 my-8'>
+          <p
+            className={`md:text-[1rem] text-sm text-center md:my-12 my-8 ${state.isPlaying && isVideoReady ? "text-white" : "text-black"}`}
+          >
             Click on the <span className='font-bold'>title</span> to flip the
             player to view my other beats.
           </p>
         </div>
         <footer className='text-center p-4'>
-          <p className='text-white text-xs mb-1'>
-            &copy; - {new Date().getFullYear()}
-            {" - "}
+          <div className='text-xs flex justify-center gap-1 text-primary-foreground mb-1'>
+            <p>&copy;</p>
+            <div>-</div>
+            <p>{new Date().getFullYear()}</p>
+            <div>-</div>
             <a
               href='https://thirdgenstudio.dev'
               target='_blank'
-              className='underline'
+              className='underline hover:cursor-pointer'
               aria-label="Third Gen Studio's website"
             >
               Third Gen Studio
             </a>
-          </p>
+          </div>
           <p className='text-xs text-primary-foreground italic'>
             For listening/demo purposes only.
           </p>

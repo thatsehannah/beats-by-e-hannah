@@ -3,12 +3,16 @@ export type Track = {
   src: string;
   title: string;
   video: string;
-  sampleSpotifyId: string;
+  discogsData: {
+    releaseId: string;
+    trackPosition: string;
+    url: string;
+  };
 };
 
-export type SpotifyTrack = {
+export type DiscogsResponse = {
+  id: string;
   artist: string;
-  albumCoverUrl: string;
-  trackUri: string;
-  name: string;
+  trackTitle: string;
+  coverImage: string;
 };

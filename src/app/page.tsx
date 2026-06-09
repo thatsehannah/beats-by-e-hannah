@@ -1,20 +1,21 @@
 "use client";
 
-import Hero from "@/app/_sections/Hero";
 import Playlist from "@/app/_sections/Playlist";
 import MiniMusicPlayer from "@/components/MiniMusicPlayer";
 import { PlaylistProvider } from "@/lib/context";
 import { Suspense } from "react";
+import HeroV2 from "./_sections/HeroV2";
+import MiniMusicPlayerV2 from "@/components/MiniMusicPlayerV2";
 
 export default function Home() {
   return (
     <PlaylistProvider>
       <main>
-        <Hero />
+        <HeroV2 />
         <Suspense>
           <Playlist />
         </Suspense>
-        <MiniMusicPlayer />
+        <MiniMusicPlayerV2 />
       </main>
     </PlaylistProvider>
   );

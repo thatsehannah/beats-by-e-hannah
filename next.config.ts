@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "i.scdn.co",
-        pathname: "/image/**",
+        hostname: "i.discogs.com",
+        pathname: "**",
       },
     ],
   },
@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
     const fileLoaderRule = config.module.rules.find(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (rule: { test: { test: (arg0: string) => any } }) =>
-        rule.test?.test?.(".svg")
+        rule.test?.test?.(".svg"),
     );
 
     config.module.rules.push(
@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
         issuer: fileLoaderRule.issuer,
         resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
         use: ["@svgr/webpack"],
-      }
+      },
     );
 
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
