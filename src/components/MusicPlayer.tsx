@@ -167,7 +167,7 @@ const MusicPlayer = () => {
         </p>
 
         {currentTrack.discogsData ? (
-          <div className='flex items-center gap-3 mt-2 mb-4 '>
+          <div className='flex items-center gap-3 mt-2 mb-4'>
             {sampleDiscogsData?.coverImage && (
               <div className='w-10 h-10 relative'>
                 <Image
@@ -183,7 +183,7 @@ const MusicPlayer = () => {
               <a
                 href={currentTrack.discogsData.url}
                 target='_blank'
-                className='italic text-sm text-white'
+                className='italic text-sm text-white line-clamp-1 max-w-[80%] pr-2'
               >
                 {`'${sampleDiscogsData.trackTitle}' by ${sampleDiscogsData.artist}`}
               </a>
