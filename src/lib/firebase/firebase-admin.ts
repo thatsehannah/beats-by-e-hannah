@@ -14,4 +14,5 @@ if (!admin.apps.length) {
   console.log("Firebase Admin already initialized");
 }
 
-export const adminDb = getFirestore("beats");
+const DATABASE = process.env.NODE_ENV === "production" ? "beats" : "beats-dev";
+export const adminDb = getFirestore(DATABASE);

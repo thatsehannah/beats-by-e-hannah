@@ -1,4 +1,4 @@
-import { Track } from "@/lib/types";
+import { SampleInfo, Track } from "@/lib/types";
 import { adminDb } from "@/lib/firebase/firebase-admin";
 import { NextResponse } from "next/server";
 
@@ -19,6 +19,7 @@ export async function GET() {
         src: data.src,
         video: data.video,
         discogsData: data["discogs-info"],
+        sampleInfo: data.sampleInfo as SampleInfo[],
       });
     });
 

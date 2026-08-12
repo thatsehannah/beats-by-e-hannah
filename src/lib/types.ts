@@ -8,6 +8,13 @@ export type Track = {
     trackPosition: string;
     url: string;
   };
+  sampleInfo: SampleInfo[];
+};
+
+export type SampleInfo = {
+  releaseId: string;
+  trackPosition: string;
+  url: string;
 };
 
 export type DiscogsResponse = {
