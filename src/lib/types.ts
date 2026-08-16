@@ -23,3 +23,8 @@ export type DiscogsResponse = {
   trackTitle: string;
   coverImage: string;
 };
+
+export type ClientSampleData = {
+  discogs: DiscogsResponse;
+  sample: SampleInfo;
+};

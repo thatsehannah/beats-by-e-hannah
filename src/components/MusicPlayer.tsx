@@ -5,8 +5,7 @@ import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Redo2, Rewind } from "lucide-react";
 import gsap from "gsap";
 import { usePlaylist } from "@/lib/context";
-import { type DiscogsResponse, type Track } from "@/lib/types";
-import Image from "next/image";
+import { type ClientSampleData, type Track } from "@/lib/types";
 import { getDiscogsData } from "@/lib/playlistService";
 import SingleSampleDisplay from "./SingleSampleDisplay";
 import MultiSampleDisplay from "./MultiSampleDisplay";
@@ -18,9 +17,7 @@ const MusicPlayer = () => {
   const { state, dispatch } = usePlaylist();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [sampleDiscogsData, setSampleDiscogsData] = useState<DiscogsResponse[]>(
-    [],
-  );
+  const [samples, setSample] = useState<ClientSampleData[]>([]);
   const [showPlaylist, setShowPlaylist] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -83,25 +80,37 @@ const MusicPlayer = () => {
 
   //getting sample data
   useEffect(() => {
-    if (currentTrack && currentTrack.sampleInfo) {
+    let isMounted = true;
+
+    if (currentTrack && currentTrack.sampleInfo.length) {
       const fetchSample = async () => {
         try {
-          const discogsData: DiscogsResponse[] = [];
-          currentTrack.sampleInfo.forEach(async (sample) => {
-            const releaseId = sample.releaseId;
-            const position = sample.trackPosition;
-            const response = await getDiscogsData(releaseId, position);
-            discogsData.push(response);
-          });
+          const consolidatedSampleData = await Promise.all(
+            currentTrack.sampleInfo.map(async (sample) => {
+              const discogs = await getDiscogsData(
+                sample.releaseId,
+                sample.trackPosition,
+              );
+              return { discogs, sample };
+            }),
+          );
 
-          setSampleDiscogsData(discogsData);
+          if (isMounted) {
+            setSample(consolidatedSampleData);
+          }
         } catch (error) {
           console.log(error);
         }
       };
 
       fetchSample();
+    } else {
+      setSample([]);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [currentTrack]);
 
   //this useEffect will listen for 'timeupdate' events
@@ -171,16 +180,10 @@ const MusicPlayer = () => {
         </p>
 
         {currentTrack.sampleInfo ? (
-          sampleDiscogsData.length === 1 ? (
-            <SingleSampleDisplay
-              discogsData={sampleDiscogsData[0]!}
-              sampleInfo={currentTrack.sampleInfo[0]!}
-            />
+          samples && samples.length === 1 ? (
+            <SingleSampleDisplay data={samples[0]} />
           ) : (
-            <MultiSampleDisplay
-              discogsData={sampleDiscogsData}
-              sampleInfo={currentTrack.sampleInfo}
-            />
+            <MultiSampleDisplay data={samples} />
           )
         ) : (
           <div className='mt-2 mb-4'>
@@ -189,7 +192,6 @@ const MusicPlayer = () => {
             </p>
           </div>
         )}
-
         <input
           type='range'
           min={0}

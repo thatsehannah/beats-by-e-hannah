@@ -1,45 +1,54 @@
-import { DiscogsResponse, SampleInfo } from "@/lib/types";
+import { type ClientSampleData } from "@/lib/types";
 import Image from "next/image";
 import React from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import SingleSampleDisplay from "./SingleSampleDisplay";
 
 interface MultiSampleDisplay {
-  discogsData: DiscogsResponse[];
-  sampleInfo: SampleInfo[];
+  data: ClientSampleData[];
 }
 
-const MultiSampleDisplay = ({
-  discogsData,
-  sampleInfo,
-}: MultiSampleDisplay) => {
+const MultiSampleDisplay = ({ data }: MultiSampleDisplay) => {
   return (
-    <div className='flex items-center gap-3 mt-2 mb-4'>
-      <div className='relative w-15 h-15'>
-        {discogsData.map((data, index) => {
-          const xOffset = index * 3;
-          const yOffset = index * 3;
-
-          return (
-            <div
-              key={index}
-              className={`absolute mx-auto bottom-[${yOffset}px] left-[${xOffset}px]`}
-            >
-              <div className='w-13 h-13 relative'>
-                <Image
-                  src={data.coverImage}
-                  fill
-                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                  alt='sampled song album cover'
-                  quality={100}
-                  className={``}
-                />
-              </div>
-            </div>
-          );
-        })}
+    <div className='flex items-center gap-3 mt-2 mb-4 relative'>
+      <div className='relative w-14 h-14'>
+        <Image
+          src={data[0]?.discogs.coverImage}
+          fill
+          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+          alt='sampled song album cover'
+          quality={100}
+        />
+        <div className='absolute w-8 mx-auto z-10 -right-2 -top-1 text-white rounded-full text-center backdrop-blur-xs bg-red-400 border border-accent-foreground text-xs'>
+          +{data.length}
+        </div>
       </div>
-      <div className='w-full h-fit max-w-[80%] pr-2'>
-        <p className='italic text-sm text-white'>Multiple samples used</p>
-      </div>
+      <Popover>
+        <PopoverTrigger
+          asChild
+          className='cursor-pointer'
+        >
+          <div className='w-full h-fit max-w-[80%] pr-2'>
+            <p className='italic text-sm text-white'>
+              Multiple samples used.{" "}
+              <span className='font-extrabold'>Click</span> to view.
+            </p>
+          </div>
+        </PopoverTrigger>
+        <PopoverContent
+          align='center'
+          className='w-md bg-accent'
+        >
+          <div className='flex flex-col gap-1'>
+            {data.map((sample, index) => (
+              <SingleSampleDisplay
+                data={sample}
+                key={index}
+              />
+            ))}
+          </div>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };
