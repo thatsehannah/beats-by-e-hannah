@@ -23,7 +23,7 @@ const MultiSampleDisplay = ({ data }: MultiSampleDisplay) => {
   }, [open]);
 
   return (
-    <div className='flex items-center gap-3 mt-2 mb-4'>
+    <div className={`flex items-center gap-3 mt-2 mb-4`}>
       <div className='relative lg:w-14 w-12 lg:h-14 h-12'>
         <Image
           src={data[0]?.discogs.coverImage}
@@ -53,7 +53,7 @@ const MultiSampleDisplay = ({ data }: MultiSampleDisplay) => {
         </PopoverTrigger>
         <PopoverContent
           align='center'
-          className='lg:w-md w-full bg-accent shadow-2xl shadow-black'
+          className='lg:w-md w-full bg-muted-foreground shadow-2xl shadow-black'
         >
           <div className='flex flex-col gap-1'>
             {data.map((sample, index) => (
