@@ -55,7 +55,7 @@ const MultiSampleDisplay = ({ data }: MultiSampleDisplay) => {
         </PopoverTrigger>
         <PopoverContent
           align='center'
-          className='lg:w-md w-full bg-muted-foreground shadow-2xl shadow-black'
+          className='lg:w-md w-full bg-popover-foreground shadow-2xl shadow-black'
         >
           <div className='flex flex-col gap-1'>
             {data.map((sample, index) => (
