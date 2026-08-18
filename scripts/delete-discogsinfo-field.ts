@@ -1,4 +1,5 @@
 // Command to run: npx tsx scripts/delete-discogsinfo-field.ts
+// For prod only
 
 import * as admin from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
@@ -10,7 +11,7 @@ admin.initializeApp({
 
 const db = getFirestore("beats");
 
-const deleteSpotifyField = async (): Promise<void> => {
+const deleteDiscogsInfoField = async (): Promise<void> => {
   const snapshot = await db.collection("beat-metadata").get();
 
   if (snapshot.empty) {
@@ -27,13 +28,12 @@ const deleteSpotifyField = async (): Promise<void> => {
   for (const doc of snapshot.docs) {
     if (!doc.data()["discogs-info"]) {
       console.log(
-        `Skipping ${doc.id} because the discogs-info field has already been removed.`,
+        `Skipping ${doc.id} because the discogs-info field does not exist.`,
       );
       skipped++;
       continue;
     }
 
-    // delete sample here maybe?
     batch.update(doc.ref, {
       "discogs-info": admin.firestore.FieldValue.delete(),
     });
@@ -48,7 +48,7 @@ const deleteSpotifyField = async (): Promise<void> => {
   console.log(`Updated ${queued}, skipped ${skipped}`);
 };
 
-deleteSpotifyField()
+deleteDiscogsInfoField()
   .then(() => process.exit(0))
   .catch((err) => {
     console.error(err);

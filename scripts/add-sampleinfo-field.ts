@@ -1,4 +1,5 @@
 // Command to run: npx tsx scripts/add-sampleinfo-field.ts
+// For prod only
 
 import * as admin from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
