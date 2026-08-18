@@ -82,7 +82,7 @@ const MusicPlayer = () => {
   useEffect(() => {
     let isMounted = true;
 
-    if (currentTrack && currentTrack.sampleInfo.length) {
+    if (currentTrack && currentTrack.sampleInfo) {
       const fetchSample = async () => {
         try {
           const consolidatedSampleData = await Promise.all(

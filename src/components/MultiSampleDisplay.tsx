@@ -32,9 +32,11 @@ const MultiSampleDisplay = ({ data }: MultiSampleDisplay) => {
           alt='sampled song album cover'
           quality={100}
         />
-        <div className='absolute w-8 mx-auto z-10 -right-2 -top-1 text-white rounded-full text-center backdrop-blur-xs bg-red-400 border border-accent-foreground text-xs'>
-          +{data.length}
-        </div>
+        {data.length > 1 && (
+          <div className='absolute w-8 mx-auto z-10 -right-2 -top-1 text-white rounded-full text-center backdrop-blur-xs bg-red-400 border border-accent-foreground text-xs'>
+            +{data.length}
+          </div>
+        )}
       </div>
       <Popover
         open={open}
