@@ -1,6 +1,8 @@
+"use client";
+
 import { type ClientSampleData } from "@/lib/types";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import SingleSampleDisplay from "./SingleSampleDisplay";
 
@@ -9,9 +11,20 @@ interface MultiSampleDisplay {
 }
 
 const MultiSampleDisplay = ({ data }: MultiSampleDisplay) => {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleScroll = () => setOpen(false);
+    window.addEventListener("scroll", handleScroll, true);
+
+    return () => window.removeEventListener("scroll", handleScroll, true);
+  }, [open]);
+
   return (
-    <div className='flex items-center gap-3 mt-2 mb-4 relative'>
-      <div className='relative w-14 h-14'>
+    <div className='flex items-center gap-3 mt-2 mb-4'>
+      <div className='relative lg:w-14 w-12 lg:h-14 h-12'>
         <Image
           src={data[0]?.discogs.coverImage}
           fill
@@ -23,7 +36,10 @@ const MultiSampleDisplay = ({ data }: MultiSampleDisplay) => {
           +{data.length}
         </div>
       </div>
-      <Popover>
+      <Popover
+        open={open}
+        onOpenChange={setOpen}
+      >
         <PopoverTrigger
           asChild
           className='cursor-pointer'
@@ -37,14 +53,13 @@ const MultiSampleDisplay = ({ data }: MultiSampleDisplay) => {
         </PopoverTrigger>
         <PopoverContent
           align='center'
-          className='w-md bg-accent'
+          className='lg:w-md w-full bg-accent shadow-2xl shadow-black'
         >
           <div className='flex flex-col gap-1'>
             {data.map((sample, index) => (
-              <SingleSampleDisplay
-                data={sample}
-                key={index}
-              />
+              <div key={index}>
+                <SingleSampleDisplay data={sample} />
+              </div>
             ))}
           </div>
         </PopoverContent>

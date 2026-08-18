@@ -166,7 +166,7 @@ const MusicPlayer = () => {
 
   return (
     <div
-      className={`relative md:w-96 w-76 h-70 rounded-xl text-foreground shadow-2xl ${
+      className={`relative md:w-96 w-83 h-70 rounded-xl text-foreground shadow-2xl ${
         state.isPlaying ? "shadow-none bg-accent/50" : "shadow-white bg-accent"
       } ease-in-out duration-700 player-card perspective-distant transform-3d`}
     >

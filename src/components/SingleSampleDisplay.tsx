@@ -9,7 +9,7 @@ interface SingleSampleDisplayProps {
 const SingleSampleDisplay = ({ data }: SingleSampleDisplayProps) => {
   return (
     <div className='flex items-center gap-3 mt-2 mb-4'>
-      <div className='w-14 h-14 relative'>
+      <div className='lg:w-14 w-12 lg:h-14 h-12 relative'>
         <Image
           src={data.discogs.coverImage}
           fill
