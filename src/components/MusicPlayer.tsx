@@ -5,9 +5,10 @@ import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Redo2, Rewind } from "lucide-react";
 import gsap from "gsap";
 import { usePlaylist } from "@/lib/context";
-import { type DiscogsResponse, type Track } from "@/lib/types";
-import Image from "next/image";
+import { type ClientSampleData, type Track } from "@/lib/types";
 import { getDiscogsData } from "@/lib/playlistService";
+import SingleSampleDisplay from "./SingleSampleDisplay";
+import MultiSampleDisplay from "./MultiSampleDisplay";
 
 //TODO: keep track of number of plays for each beat
 //TODO: add like and dislike buttons to media player for each beat
@@ -16,12 +17,7 @@ const MusicPlayer = () => {
   const { state, dispatch } = usePlaylist();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [sampleDiscogsData, setSampleDiscogsData] = useState<DiscogsResponse>({
-    id: "",
-    trackTitle: "",
-    artist: "",
-    coverImage: "",
-  });
+  const [samples, setSample] = useState<ClientSampleData[]>([]);
   const [showPlaylist, setShowPlaylist] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -84,20 +80,37 @@ const MusicPlayer = () => {
 
   //getting sample data
   useEffect(() => {
-    if (currentTrack && currentTrack.discogsData) {
+    let isMounted = true;
+
+    if (currentTrack && currentTrack.sampleInfo) {
       const fetchSample = async () => {
         try {
-          const releaseId = currentTrack.discogsData.releaseId;
-          const position = currentTrack.discogsData.trackPosition;
-          const response = await getDiscogsData(releaseId, position);
-          setSampleDiscogsData(response);
+          const consolidatedSampleData = await Promise.all(
+            currentTrack.sampleInfo.map(async (sample) => {
+              const discogs = await getDiscogsData(
+                sample.releaseId,
+                sample.trackPosition,
+              );
+              return { discogs, sample };
+            }),
+          );
+
+          if (isMounted) {
+            setSample(consolidatedSampleData);
+          }
         } catch (error) {
           console.log(error);
         }
       };
 
       fetchSample();
+    } else {
+      setSample([]);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [currentTrack]);
 
   //this useEffect will listen for 'timeupdate' events
@@ -153,7 +166,7 @@ const MusicPlayer = () => {
 
   return (
     <div
-      className={`relative md:w-96 w-76 h-65 rounded-xl text-foreground shadow-2xl ${
+      className={`relative md:w-96 w-83 h-70 rounded-xl text-foreground shadow-2xl ${
         state.isPlaying ? "shadow-none bg-accent/50" : "shadow-white bg-accent"
       } ease-in-out duration-700 player-card perspective-distant transform-3d`}
     >
@@ -166,29 +179,12 @@ const MusicPlayer = () => {
           {currentTrack.title}
         </p>
 
-        {currentTrack.discogsData ? (
-          <div className='flex items-center gap-3 mt-2 mb-4'>
-            {sampleDiscogsData?.coverImage && (
-              <div className='w-10 h-10 relative'>
-                <Image
-                  src={sampleDiscogsData.coverImage}
-                  fill
-                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                  alt='sampled song album cover'
-                  quality={100}
-                />
-              </div>
-            )}
-            {sampleDiscogsData.artist && sampleDiscogsData.trackTitle && (
-              <a
-                href={currentTrack.discogsData.url}
-                target='_blank'
-                className='italic text-sm text-white line-clamp-1 max-w-[80%] pr-2'
-              >
-                {`'${sampleDiscogsData.trackTitle}' by ${sampleDiscogsData.artist}`}
-              </a>
-            )}
-          </div>
+        {currentTrack.sampleInfo ? (
+          samples && samples.length === 1 ? (
+            <SingleSampleDisplay data={samples[0]} />
+          ) : (
+            <MultiSampleDisplay data={samples} />
+          )
         ) : (
           <div className='mt-2 mb-4'>
             <p className='italic text-sm text-white'>
@@ -196,7 +192,6 @@ const MusicPlayer = () => {
             </p>
           </div>
         )}
-
         <input
           type='range'
           min={0}
