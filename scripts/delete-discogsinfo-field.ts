@@ -1,4 +1,4 @@
-// Command to run: npx tsx scripts/add-createdon-field.ts
+// Command to run: npx tsx scripts/delete-discogsinfo-field.ts
 
 import * as admin from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
@@ -10,7 +10,7 @@ admin.initializeApp({
 
 const db = getFirestore("beats");
 
-const addCreatedOnField = async (): Promise<void> => {
+const deleteSpotifyField = async (): Promise<void> => {
   const snapshot = await db.collection("beat-metadata").get();
 
   if (snapshot.empty) {
@@ -25,13 +25,18 @@ const addCreatedOnField = async (): Promise<void> => {
   let queued = 0;
 
   for (const doc of snapshot.docs) {
-    if (doc.data().createdOn) {
-      console.log(`Skipping ${doc.id} because it already has createdOn field.`);
+    if (!doc.data()["discogs-info"]) {
+      console.log(
+        `Skipping ${doc.id} because the discogs-info field has already been removed.`,
+      );
       skipped++;
       continue;
     }
 
-    batch.update(doc.ref, { createdOn: admin.firestore.Timestamp.now() });
+    // delete sample here maybe?
+    batch.update(doc.ref, {
+      "discogs-info": admin.firestore.FieldValue.delete(),
+    });
     queued++;
     console.log(`Queued ${doc.id}`);
   }
@@ -43,7 +48,7 @@ const addCreatedOnField = async (): Promise<void> => {
   console.log(`Updated ${queued}, skipped ${skipped}`);
 };
 
-addCreatedOnField()
+deleteSpotifyField()
   .then(() => process.exit(0))
   .catch((err) => {
     console.error(err);
