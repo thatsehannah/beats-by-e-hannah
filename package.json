@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "upload:dev": "NODE_ENV=development npx tsx scripts/upload-beat.ts",
+    "upload:prod": "NODE_ENV=production npx tsx scripts/upload-beat.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

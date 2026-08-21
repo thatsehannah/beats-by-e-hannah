@@ -1,24 +1,15 @@
 // Command to run: npx tsx scripts/add-sampleinfo-field.ts
-// For prod only
 
-import * as admin from "firebase-admin";
-import { getFirestore } from "firebase-admin/firestore";
-import * as serviceAccount from "../firebase-service-account.json";
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-});
-
-const db = getFirestore("beats");
+import { adminDb } from "../src/lib/firebase/firebase-admin";
 
 const addSampleInfoField = async (): Promise<void> => {
-  const snapshot = await db.collection("beat-metadata").get();
+  const snapshot = await adminDb.collection("beat-metadata").get();
 
   if (snapshot.empty) {
     console.log("No documents found.");
   }
 
-  const batch = db.batch();
+  const batch = adminDb.batch();
   let skipped = 0;
   let queued = 0;
 
