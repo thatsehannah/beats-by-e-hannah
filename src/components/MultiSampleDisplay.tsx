@@ -33,7 +33,7 @@ const MultiSampleDisplay = ({ data }: MultiSampleDisplay) => {
           quality={100}
         />
         {data.length > 1 && (
-          <div className='absolute w-8 mx-auto z-10 -right-2 -top-1 text-white rounded-full text-center backdrop-blur-xs bg-red-400 border border-accent-foreground text-xs'>
+          <div className='absolute w-8 mx-auto -right-2 -top-1 text-white rounded-full text-center bg-red-400 border border-accent-foreground text-xs'>
             +{data.length}
           </div>
         )}
@@ -55,7 +55,7 @@ const MultiSampleDisplay = ({ data }: MultiSampleDisplay) => {
         </PopoverTrigger>
         <PopoverContent
           align='center'
-          className='lg:w-md w-full bg-popover-foreground shadow-2xl shadow-black'
+          className='lg:w-full w-[75%] bg-popover-foreground shadow-2xl shadow-black'
         >
           <div className='flex flex-col gap-1'>
             {data.map((sample, index) => (
